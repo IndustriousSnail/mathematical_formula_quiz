@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>公式提写</title>
+</head>
+<body>
+<div id="tipDiv" style="margin: 0 auto; margin-top: 10px; width: 100%; text-align: center; "></div>
+<div style="margin: 0 auto; margin-top: 20px; width: 100%; text-align: center; ">
+    <img id="key" src="./fomula/key1.png">
+</div>
+<div style="margin: 0 auto; width: 100%; margin-top: 60px; text-align: center">
+    <input id="button" type="button" onclick="view()" value="查看答案"
+           style="width: 200px; height: 100px; font-size: 40px;">
+</div>
+<div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 60px; display: none" id="valueDiv">
+    <img id="value" src="./fomula/value1.png">
+</div>
+
+</body>
+</html>
+<script>
+    var curr = 0;
+    var maxIndex = 77;
+    var indexTip = {
+        "1-8": "泰勒公式",
+        "10-21": "求导公式",
+        "22-28": "n阶导数公式",
+        "29-29": "莱布尼茨公式",
+        "30-39": "诱导公式（奇变偶不变，符号看象限）",
+        "40-42": "三角函数平凡关系",
+        "43-48": "两角和与差的三角函数",
+        "49-52": "积化和差公式",
+        "53-56": "和差化积公式",
+        "57-61": "倍角公式",
+        "62-64": "半角公式",
+        "65-67": "万能公式",
+        "68-71": "其他公式",
+        "72-72": "分部积分公式",
+        "73-77": "积分中值定理",
+
+    };
+    var tipMap = {};
+
+    function init() {
+        resolveTipMap();
+        randomOne();
+    }
+
+    init();
+
+    function resolveTipMap() {
+        for (var item in indexTip) {
+            const nums = item.split(",");
+            for (var i in nums) {
+                const start = parseInt(nums[i].split("-")[0]);
+                const end = parseInt(nums[i].split("-")[1]);
+                for (let j = start; j <= end; j++) {
+                    tipMap[j] = indexTip[item];
+                }
+            }
+        }
+    }
+
+    function randomOne() {
+        let newRandom = 0;
+        do {
+            newRandom = Math.ceil(Math.random() * maxIndex);
+        } while (newRandom === curr);
+        curr = newRandom; // 保障两次之间不会有重复的
+        document.getElementById("tipDiv").innerText = tipMap[curr] === undefined ? "" : tipMap[curr];
+        document.getElementById("key").setAttribute("src", "./fomula/key" + curr + ".png");
+        document.getElementById("value").setAttribute("src", "./fomula/value" + curr + ".png");
+    }
+
+    function view() {
+        var button = document.getElementById("button");
+        if (button.getAttribute("value") === "查看答案") {
+            document.getElementById("valueDiv").style.display = "block";
+            button.setAttribute("value", "下一个");
+        } else {
+            randomOne();
+            button.setAttribute("value", "查看答案");
+            document.getElementById("valueDiv").style.display = "none";
+        }
+    }
+</script>
